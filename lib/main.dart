@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
   runApp(const CounterImageToggleApp());
@@ -41,6 +42,15 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
       vsync: this,
     );
     _fade = CurvedAnimation(parent: _controller, curve: Curves.easeInOut);
+    _loadCounter(); // want this function called when app runs
+  }
+
+  // get the previously update value of counter
+  Future<void> _loadCounter() async{
+    final prefs = await SharedPreferences.getInstance();
+    final counter = prefs.getInt('counterVal') ?? 0;
+    
+    setState(() => _counter = counter);
   }
 
   @override
@@ -49,16 +59,26 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
     super.dispose();
   }
 
-  void _incrementCounter() {
-    setState(() => _counter++);
+  void _incrementCounter() async{
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _counter = (prefs.getInt('counterVal') ?? 0) + 1;
+    });
+    await prefs.setInt('counterVal', _counter);
   }
 
-  void _decrementCounter() {
-    setState(() => _counter--);
+  void _decrementCounter() async{
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _counter = (prefs.getInt('counterVal') ?? 0) - 1;
+    });
+    await prefs.setInt('counterVal', _counter);
   }
 
-  void _resetCounter() {
+  void _resetCounter() async{
+    final prefs = await SharedPreferences.getInstance();
     setState(() => _counter = 0);
+    await prefs.setInt('counterVal', _counter); 
   }
 
   void _toggleTheme() {
@@ -100,7 +120,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
               ),
               const SizedBox(height: 12),
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   ElevatedButton(
                   onPressed: _incrementCounter,
