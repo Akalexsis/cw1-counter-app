@@ -12,6 +12,7 @@ class CounterImageToggleApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'CW1 Counter & Toggle',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData.light(),
       darkTheme: ThemeData.dark(),
       home: const HomePage(),
@@ -85,6 +86,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
     setState(() => _isDark = !_isDark);
   }
 
+  // toggles between two images with animation
   void _toggleImage() {
     if (_isFirstImage) {
       _controller.forward();
@@ -136,10 +138,10 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                 )]
               ),
               const SizedBox(height: 24),
-              FadeTransition(
+              FadeTransition( // FIX - first image is hidden 
                 opacity: _fade,
                 child: Image.asset(
-                  _isFirstImage ? 'assets/image1.png' : 'assets/image2.png',
+                  _isFirstImage ? 'assets/images/hot_face.jpg' : 'assets/images/cold_face.jpeg',
                   width: 180,
                   height: 180,
                   fit: BoxFit.cover,
