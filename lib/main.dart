@@ -53,6 +53,14 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
     setState(() => _counter++);
   }
 
+  void _decrementCounter() {
+    setState(() => _counter--);
+  }
+
+  void _resetCounter() {
+    setState(() => _counter = 0);
+  }
+
   void _toggleTheme() {
     setState(() => _isDark = !_isDark);
   }
@@ -91,9 +99,21 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                 style: Theme.of(context).textTheme.headlineMedium,
               ),
               const SizedBox(height: 12),
-              ElevatedButton(
-                onPressed: _incrementCounter,
-                child: const Text('Increment'),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  ElevatedButton(
+                  onPressed: _incrementCounter,
+                  child: const Text('Increment +'),
+                ),
+                ElevatedButton(
+                  onPressed: _counter == 0 ? null : _decrementCounter,
+                  child: const Text('Decrement -'),
+                ),
+                ElevatedButton(
+                  onPressed: _counter == 0 ? null : _resetCounter,
+                  child: const Text('Reset @'),
+                )]
               ),
               const SizedBox(height: 24),
               FadeTransition(
