@@ -12,9 +12,9 @@ class CounterImageToggleApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'CW1 Counter & Toggle',
-      debugShowCheckedModeBanner: false,
       theme: ThemeData.light(),
       darkTheme: ThemeData.dark(),
+      debugShowCheckedModeBanner: false,
       home: const HomePage(),
     );
   }
@@ -62,16 +62,20 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
 
   void _incrementCounter() async{
     final prefs = await SharedPreferences.getInstance();
+    final count = (prefs.getInt('counterVal') ?? 0) + 1;
+    
     setState(() {
-      _counter = (prefs.getInt('counterVal') ?? 0) + 1;
+      _counter = count;
     });
     await prefs.setInt('counterVal', _counter);
   }
 
   void _decrementCounter() async{
     final prefs = await SharedPreferences.getInstance();
+    final count = (prefs.getInt('counterVal') ?? 0) - 1;
+    
     setState(() {
-      _counter = (prefs.getInt('counterVal') ?? 0) - 1;
+      _counter = count;
     });
     await prefs.setInt('counterVal', _counter);
   }
@@ -99,6 +103,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       themeMode: _isDark ? ThemeMode.dark : ThemeMode.light,
       theme: ThemeData.light(),
       darkTheme: ThemeData.dark(),
@@ -141,7 +146,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
               FadeTransition( // FIX - first image is hidden 
                 opacity: _fade,
                 child: Image.asset(
-                  _isFirstImage ? 'assets/images/hot_face.jpg' : 'assets/images/cold_face.jpeg',
+                  _isFirstImage ? 'assets/images/cold_face.jpeg' : 'assets/images/hot_face.jpg',
                   width: 180,
                   height: 180,
                   fit: BoxFit.cover,
